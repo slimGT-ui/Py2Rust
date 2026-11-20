@@ -29,8 +29,14 @@ Chronological engineering log. Add an entry after every meaningful work session.
 - Windows SDK/linker availability has not yet been confirmed by a real Rust build.
 - Linux/Arch build has not yet been run.
 
+### Commit history
+- Initial foundation: `8a6a6bbd239b51eb90f1f253e66e2744e62ca68e`.
+- Follow-up Rust formatting and Display formatting fix: `db5806c9ee70ae9227f3c9073490a92db57d8471`.
+- Follow-up loader formatting: `055258d225898405156588bc527592e98c7c3207`.
+- Follow-up CLI test formatting: `cc5ddb4bb78671c404bb6745054378bd69730fc8`.
+
 ### Next
-Pull the commit on Windows and run the commands in `SESSION_HANDOFF.md`. Fix any compiler, test, or lint issues before marking Phase 1 verified.
+Pull the latest `main` on Windows and run the commands in `SESSION_HANDOFF.md`. Fix any compiler, test, or lint issues before marking Phase 1 verified.
 
 ## 2026-11-20 — Phase 1 kickoff: Rust foundation
 **Type:** Project setup / engineering workflow  
