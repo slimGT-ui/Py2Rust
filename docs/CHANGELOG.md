@@ -2,6 +2,29 @@
 
 Chronological engineering log. Add an entry after every meaningful work session.
 
+## 2026-11-20 — Windows verification: formatting, Clippy, tests, and CLI help
+**Type:** Verification  
+**Status:** Local Windows checks passed; CI and manual file-input smoke tests remain pending.
+
+### Environment
+- Windows Developer PowerShell, repository `C:\programming\Py2Rust`.
+- Rust/Cargo 1.100.0, stable `x86_64-pc-windows-msvc`, MSVC 19.44.35230.
+
+### Commands reported by the user
+- `git pull --ff-only` — fast-forwarded local main to commit `34275480582d4df6574cd3eeabf6e54c1a037c3e`.
+- `cargo fmt --all` — completed successfully.
+- `cargo fmt --all -- --check` — completed successfully (no output, exit success implied by subsequent commands).
+- `cargo clippy --workspace --all-targets --all-features -- -D warnings` — completed successfully.
+- `cargo test --workspace` — passed: 5 library unit tests + 5 CLI integration tests; 10 passed, 0 failed.
+- `cargo run -- --help` — printed expected usage and current limitation.
+- `cargo run -- --version` — printed `py2rust 0.1.0`.
+
+### Still pending
+- The user has applied rustfmt locally; resulting source changes need to be inspected and committed/pushed so CI tests the formatted source.
+- GitHub Actions for the previously pushed, pre-rustfmt source still reports failure at the formatting step; no green CI result yet.
+- Manual valid-file, missing-file, and directory CLI smoke tests not yet reported.
+- Linux/Arch verification not yet run.
+
 ## 2026-11-20 — Phase 1.1: Initial Cargo package and CLI
 **Type:** Rust foundation / CLI / CI  
 **Status:** IMPLEMENTED; local formatting, lint, build, and tests have not yet been run.
@@ -27,12 +50,19 @@ Chronological engineering log. Add an entry after every meaningful work session.
 - The Linux job reached `Check formatting` and failed there; Clippy and tests were skipped. The hand-formatted source still differs from rustfmt output.
 - This is not a compiler or test failure yet; run `cargo fmt --all` locally, then rerun the full checks.
 
+### Windows local verification — passed
+- `cargo fmt --all` and `cargo fmt --all -- --check`: passed.
+- `cargo clippy --workspace --all-targets --all-features -- -D warnings`: passed.
+- `cargo test --workspace`: 10 passed, 0 failed (5 unit + 5 integration).
+- `cargo run -- --help`: expected usage and limitation printed.
+- `cargo run -- --version`: `py2rust 0.1.0`.
+- Clippy and tests compiled the project successfully on the MSVC toolchain.
+
 ### Not yet verified
-- No Cargo build or test result is available yet.
-- No local formatting, Clippy, build, or test result is available.
-- CI has not yet run on GitHub.
-- Windows SDK/linker availability has not yet been confirmed by a real Rust build.
-- Linux/Arch build has not yet been run.
+- GitHub Actions still tests the previously pushed source before the user's local rustfmt changes; it fails at formatting. Push the formatted source and wait for a fresh CI run.
+- Manual valid-file, missing-file, and directory smoke tests have not yet been reported.
+- A standalone `cargo build` command has not been run (Clippy/tests did compile the project).
+- Linux/Arch build and tests have not yet been run.
 
 ### Commit history
 - Initial foundation: `8a6a6bbd239b51eb90f1f253e66e2744e62ca68e`.
