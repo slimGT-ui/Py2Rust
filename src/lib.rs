@@ -55,7 +55,10 @@ pub fn load_python_file(path: impl AsRef<Path>) -> Result<LoadedInput, InputErro
         if source.kind() == io::ErrorKind::NotFound {
             InputError::NotFound(path.clone())
         } else {
-            InputError::Inspect { path: path.clone(), source }
+            InputError::Inspect {
+                path: path.clone(),
+                source,
+            }
         }
     })?;
 
@@ -71,8 +74,10 @@ pub fn load_python_file(path: impl AsRef<Path>) -> Result<LoadedInput, InputErro
         return Err(InputError::UnsupportedExtension(path));
     }
 
-    let source = fs::read_to_string(&path)
-        .map_err(|source| InputError::Read { path: path.clone(), source })?;
+    let source = fs::read_to_string(&path).map_err(|source| InputError::Read {
+        path: path.clone(),
+        source,
+    })?;
 
     Ok(LoadedInput { path, source })
 }
@@ -84,7 +89,10 @@ mod tests {
     use std::time::{SystemTime, UNIX_EPOCH};
 
     fn temp_path(label: &str) -> std::path::PathBuf {
-        let nonce = SystemTime::now().duration_since(UNIX_EPOCH).unwrap().as_nanos();
+        let nonce = SystemTime::now()
+            .duration_since(UNIX_EPOCH)
+            .unwrap()
+            .as_nanos();
         std::env::temp_dir().join(format!("py2rust-{label}-{}-{nonce}", std::process::id()))
     }
 
@@ -111,7 +119,10 @@ mod tests {
     fn rejects_directory() {
         let path = temp_path("directory.py");
         fs::create_dir_all(&path).unwrap();
-        assert!(matches!(load_python_file(&path), Err(InputError::NotAFile(_))));
+        assert!(matches!(
+            load_python_file(&path),
+            Err(InputError::NotAFile(_))
+        ));
         fs::remove_dir_all(path).unwrap();
     }
 
@@ -134,7 +145,10 @@ mod tests {
         fs::create_dir_all(&dir).unwrap();
         let path = dir.join("invalid.py");
         fs::write(&path, [0xFF, 0xFE]).unwrap();
-        assert!(matches!(load_python_file(&path), Err(InputError::Read { .. })));
+        assert!(matches!(
+            load_python_file(&path),
+            Err(InputError::Read { .. })
+        ));
         fs::remove_dir_all(dir).unwrap();
     }
 }
