@@ -14,8 +14,9 @@ This file is the source of truth for project progress. Status must reflect verif
 ## Current state — 2026-11-20
 - Current phase: Phase 1 — Rust foundation.
 - Current milestone: `v0.1.0 — Foundational MVP`.
-- Implementation: initial Cargo package, CLI, input loader, tests, and CI workflow committed; local verification pending.
-- Verified code: none yet.
+- Implementation: initial Cargo package, CLI, input loader, tests, and CI workflow committed.
+- Windows local verification: rustfmt check passed, Clippy passed with warnings denied, and all 10 unit/integration tests passed.
+- Remaining verification: manual valid/missing/directory CLI smoke tests, Linux local build, and a green GitHub Actions run.
 - Repository: `slimGT-ui/Py2Rust`.
 - Windows preflight: Rust/Cargo 1.100.0, stable `x86_64-pc-windows-msvc`, MSVC 19.44.35230, Git 2.55.0.
 - Next action: pull the implementation and run formatting, lint, and tests on Windows.
@@ -28,7 +29,7 @@ Goals: define scope, roadmap, architecture, compatibility vocabulary, workflow, 
 Exit criteria: documentation committed; repository metadata recorded; workspace plan agreed.
 
 ## Phase 1 — Rust foundation
-**Status: IN PROGRESS (initial implementation committed; local verification pending).**
+**Status: IN PROGRESS (Windows formatting, Clippy, and automated tests verified; cross-platform CI and manual smoke tests pending).**
 
 ### Scope
 - Confirm local clone and working-tree state and Rust toolchain.
@@ -50,8 +51,9 @@ Exit criteria: documentation committed; repository metadata recorded; workspace 
 
 ### Subtasks
 - **1.0 — Local environment preflight: COMPLETE on Windows.** Confirmed Git 2.55.0, Rust/Cargo 1.100.0, stable MSVC target, and MSVC 19.44.35230. Clone: `C:\programming\Py2Rust`, branch `main`, clean before implementation.
-- **1.1 — Minimal Cargo package and CLI: IMPLEMENTED, verification pending.** One package, standard-library-only loader, CLI help/version, explicit not-yet-translated message, tests, stable toolchain file, and Windows/Linux CI.
-- **Next — 1.2: Run local formatting, Clippy, tests, and manual CLI checks; fix failures before marking the foundation verified.**
+- **1.1 — Minimal Cargo package and CLI: IMPLEMENTED; Windows automated checks VERIFIED.** One package, standard-library-only loader, CLI help/version, explicit not-yet-translated message, tests, stable toolchain file, and Windows/Linux CI.
+- **1.2 — Windows verification: PARTIALLY COMPLETE.** User ran `cargo fmt --all`, `cargo fmt --all -- --check`, `cargo clippy --workspace --all-targets --all-features -- -D warnings`, and `cargo test --workspace`. Formatting and Clippy completed successfully; all 10 tests passed (5 unit + 5 integration). `cargo run -- --help` and `--version` both returned expected output.
+- **Remaining — 1.3: Commit/push rustfmt changes from the user's working tree, obtain green Windows/Linux CI, run manual input smoke tests, and verify on Arch Linux.**
 
 ## Phase 2 — Python parser and AST
 **Status: PLANNED**
