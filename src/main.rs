@@ -33,14 +33,23 @@ fn run(args: impl Iterator<Item = OsString>) -> Result<(), CliError> {
         return Ok(());
     }
     if first.to_string_lossy().starts_with('-') {
-        return Err(CliError::Usage(format!("unknown option: {}", first.to_string_lossy())));
+        return Err(CliError::Usage(format!(
+            "unknown option: {}",
+            first.to_string_lossy()
+        )));
     }
     if args.next().is_some() {
-        return Err(CliError::Usage("expected exactly one input file".to_owned()));
+        return Err(CliError::Usage(
+            "expected exactly one input file".to_owned(),
+        ));
     }
 
     let input = load_python_file(PathBuf::from(first)).map_err(CliError::Input)?;
-    println!("Loaded Python source: {} ({} bytes)", input.path.display(), input.source.len());
+    println!(
+        "Loaded Python source: {} ({} bytes)",
+        input.path.display(),
+        input.source.len()
+    );
     println!("Translation is not implemented yet.");
     Ok(())
 }
@@ -71,7 +80,7 @@ impl fmt::Display for CliError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
             Self::Usage(message) => f.write_str(message),
-            Self::Input(error) => error.fmt(f),
+            Self::Input(error) => fmt::Display::fmt(error, f),
         }
     }
 }
