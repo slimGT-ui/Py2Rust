@@ -47,8 +47,15 @@ Build a Rust-based Python-to-Rust transpiler that progressively supports broad P
 - MSVC compiler: `19.44.35230`
 - Use Developer PowerShell (or initialize it with `Launch-VsDevShell.ps1 -Arch amd64 -HostArch amd64`) so MSVC is available.
 
+## GitHub implementation commits
+- Initial foundation: `8a6a6bbd239b51eb90f1f253e66e2744e62ca68e`.
+- Follow-up Rust formatting and Display formatting fix: `db5806c9ee70ae9227f3c9073490a92db57d8471`.
+- Follow-up loader formatting: `055258d225898405156588bc527592e98c7c3207`.
+- Follow-up CLI test formatting: `cc5ddb4bb78671c404bb6745054378bd69730fc8`.
+- Current branch head after these commits: `cc5ddb4bb78671c404bb6745054378bd69730fc8`.
+
 ## Verification status
-Not yet run. Do not mark Phase 1 verified until the user runs these commands.
+Not yet run. The assistant environment does not have Rust installed, so all Rust formatting/build/lint/test checks must be run in the user's Windows Developer PowerShell. Do not mark Phase 1 verified until the user runs these commands.
 
 ## Exact next task
 From the repository root in Developer PowerShell:
