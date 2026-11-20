@@ -12,30 +12,48 @@ This file is the source of truth for project progress. Status must reflect verif
 - **DEFERRED** — intentionally postponed, reason recorded.
 
 ## Current state — 2026-11-20
-- Current phase: Phase 0 — documentation and repository setup.
+- Current phase: Phase 1 — Rust foundation.
 - Current milestone: `v0.1.0 — Foundational MVP`.
-- Implementation: NOT STARTED.
+- Implementation: Phase 1 initiated; no Rust source files created yet.
 - Verified code: none.
-- Repository: `slimGT-ui/4`.
-- Next action: initialize the Rust workspace and baseline tooling.
+- Repository: `slimGT-ui/Py2Rust`.
+- Current blocker: local Rust toolchain and clone state must be confirmed before implementation.
+- Next action: run the local environment checks listed in `SESSION_HANDOFF.md`.
 
 ## Phase 0 — Documentation and project setup
-**Status: IN PROGRESS (docs committed; workspace not initialized).**
+**Status: VERIFIED (documentation committed and fetched from GitHub).**
 
 Goals: define scope, roadmap, architecture, compatibility vocabulary, workflow, and session handoff. Confirm repository and keep documentation in the repository.
 
 Exit criteria: documentation committed; repository metadata recorded; workspace plan agreed.
 
 ## Phase 1 — Rust foundation
-**Status: PLANNED**
+**Status: IN PROGRESS (environment preflight started; implementation not yet written).**
 
-- Initialize Cargo workspace and binary crate.
-- Choose supported Rust toolchain policy.
-- Configure `rustfmt`, `clippy`, tests, and CI.
-- Implement minimal CLI and structured errors/logging.
-- Accept an input `.py` path and report file/read errors clearly.
+### Scope
+- Confirm the user's local clone and working-tree state.
+- Confirm installed Rust compiler and Cargo versions.
+- Initialize a minimal Cargo project/workspace and CLI binary.
+- Choose and document the Rust toolchain policy based on the available environment.
+- Configure rustfmt, clippy, unit/integration tests, and CI.
+- Implement a minimal CLI with structured, actionable errors.
+- Accept an input `.py` path and report invalid paths/read failures clearly.
+- Keep translation/parsing out of scope for this phase.
 
-Exit: builds on documented environment; CLI handles valid and invalid paths; formatting, lint, and tests pass in CI.
+### Acceptance criteria
+- Project builds with the documented Rust toolchain.
+- CLI starts and exposes basic help/version behavior.
+- CLI accepts a path and distinguishes missing path, non-file path, and read failure.
+- Errors are understandable and do not panic for expected user-input failures.
+- Unit/integration tests cover CLI argument and file-loading behavior.
+- Formatting, lint, and test commands pass locally and in CI.
+- Documentation records exact commands and actual results.
+
+### Current subtask
+**1.0 — Local environment preflight**
+- Status: IN PROGRESS
+- Required evidence: `pwd`, `git status --short`, `rustc --version`, `cargo --version`.
+- No workspace files will be created until the local clone state is confirmed.
 
 ## Phase 2 — Python parser and AST
 **Status: PLANNED**
@@ -94,7 +112,7 @@ Lambdas/closures, decorators, iterators, generators/yield, comprehensions, conte
 ## Phase 10 — Compatibility runtime
 **Status: PLANNED**
 
-Add Rust runtime helpers only where needed for selected Python semantics: dynamic values, truthiness/comparisons, dynamic containers/attributes, exception behavior, and difficult language features. Runtime-backed output must be disclosed in reports; it is not a blanket full-compatibility guarantee.
+Add Rust runtime helpers only where needed for selected Python semantics: dynamic values, truthiness/comparisons, dynamic containers/attributes, exception behavior, and difficult language features. Runtime usage must be visible in reports; it is not a blanket full-compatibility guarantee.
 
 ## Phase 11 — Behavioral equivalence and reliability
 **Status: PLANNED**
