@@ -22,8 +22,13 @@ Chronological engineering log. Add an entry after every meaningful work session.
 - Git 2.55.0.windows.5.
 - Local clone: `C:\programming\Py2Rust`, branch `main`, clean and synchronized before this commit.
 
+### CI feedback
+- GitHub Actions was triggered on the initial implementation commits.
+- The Linux job reached `Check formatting` and failed there; Clippy and tests were skipped. The hand-formatted source still differs from rustfmt output.
+- This is not a compiler or test failure yet; run `cargo fmt --all` locally, then rerun the full checks.
+
 ### Not yet verified
-- No Cargo command has been run against the new source.
+- No Cargo build or test result is available yet.
 - No local formatting, Clippy, build, or test result is available.
 - CI has not yet run on GitHub.
 - Windows SDK/linker availability has not yet been confirmed by a real Rust build.
