@@ -14,11 +14,11 @@ This file is the source of truth for project progress. Status must reflect verif
 ## Current state — 2026-11-20
 - Current phase: Phase 1 — Rust foundation.
 - Current milestone: `v0.1.0 — Foundational MVP`.
-- Implementation: Phase 1 initiated; no Rust source files created yet.
-- Verified code: none.
+- Implementation: initial Cargo package, CLI, input loader, tests, and CI workflow committed; local verification pending.
+- Verified code: none yet.
 - Repository: `slimGT-ui/Py2Rust`.
-- Current blocker: local Rust toolchain and clone state must be confirmed before implementation.
-- Next action: run the local environment checks listed in `SESSION_HANDOFF.md`.
+- Windows preflight: Rust/Cargo 1.100.0, stable `x86_64-pc-windows-msvc`, MSVC 19.44.35230, Git 2.55.0.
+- Next action: pull the implementation and run formatting, lint, and tests on Windows.
 
 ## Phase 0 — Documentation and project setup
 **Status: VERIFIED (documentation committed and fetched from GitHub).**
@@ -28,32 +28,30 @@ Goals: define scope, roadmap, architecture, compatibility vocabulary, workflow, 
 Exit criteria: documentation committed; repository metadata recorded; workspace plan agreed.
 
 ## Phase 1 — Rust foundation
-**Status: IN PROGRESS (environment preflight started; implementation not yet written).**
+**Status: IN PROGRESS (initial implementation committed; local verification pending).**
 
 ### Scope
-- Confirm the user's local clone and working-tree state.
-- Confirm installed Rust compiler and Cargo versions.
-- Initialize a minimal Cargo project/workspace and CLI binary.
-- Choose and document the Rust toolchain policy based on the available environment.
-- Configure rustfmt, clippy, unit/integration tests, and CI.
-- Implement a minimal CLI with structured, actionable errors.
-- Accept an input `.py` path and report invalid paths/read failures clearly.
-- Keep translation/parsing out of scope for this phase.
+- Confirm local clone and working-tree state and Rust toolchain.
+- Initialize a minimal Cargo project and CLI binary.
+- Choose and document the Rust toolchain policy.
+- Configure rustfmt, clippy, tests, and CI.
+- Implement a minimal CLI with actionable errors.
+- Accept one input `.py` path and report invalid paths/read failures.
+- Keep translation and parsing out of scope.
 
 ### Acceptance criteria
-- Project builds with the documented Rust toolchain.
-- CLI starts and exposes basic help/version behavior.
-- CLI accepts a path and distinguishes missing path, non-file path, and read failure.
-- Errors are understandable and do not panic for expected user-input failures.
-- Unit/integration tests cover CLI argument and file-loading behavior.
+- Project builds with the documented toolchain.
+- CLI exposes help/version behavior.
+- CLI distinguishes missing path, non-file path, and read failure.
+- Expected user-input failures do not panic.
+- Unit/integration tests cover CLI and file-loading behavior.
 - Formatting, lint, and test commands pass locally and in CI.
-- Documentation records exact commands and actual results.
+- Documentation records actual commands and results.
 
-### Current subtask
-**1.0 — Local environment preflight**
-- Status: IN PROGRESS
-- Required evidence: `pwd`, `git status --short`, `rustc --version`, `cargo --version`.
-- No workspace files will be created until the local clone state is confirmed.
+### Subtasks
+- **1.0 — Local environment preflight: COMPLETE on Windows.** Confirmed Git 2.55.0, Rust/Cargo 1.100.0, stable MSVC target, and MSVC 19.44.35230. Clone: `C:\programming\Py2Rust`, branch `main`, clean before implementation.
+- **1.1 — Minimal Cargo package and CLI: IMPLEMENTED, verification pending.** One package, standard-library-only loader, CLI help/version, explicit not-yet-translated message, tests, stable toolchain file, and Windows/Linux CI.
+- **Next — 1.2: Run local formatting, Clippy, tests, and manual CLI checks; fix failures before marking the foundation verified.**
 
 ## Phase 2 — Python parser and AST
 **Status: PLANNED**
@@ -142,4 +140,4 @@ Required:
 Explicit non-goals: arbitrary third-party packages; full dynamic Python semantics; all classes/decorators/metaclasses; guaranteed ownership inference for arbitrary programs; perfect conversion of every Python program.
 
 ## Roadmap maintenance
-After each meaningful session: update statuses from actual checks; add discovered tasks/blockers; record scope/decision changes; update changelog and handoff; state the exact next action. Do not mark unverified work complete.
+After each meaningful session: update statuses from actual checks; add discovered tasks/blockers; update changelog and handoff; state the exact next action. Do not mark unverified work complete.

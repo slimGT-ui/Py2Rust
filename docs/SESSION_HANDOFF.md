@@ -5,19 +5,18 @@ Update this file at the end of every meaningful work session. It is the concise 
 ## Current state
 - Project: Py2Rust
 - Canonical repository: https://github.com/slimGT-ui/Py2Rust
-- Previous repository name: `slimGT-ui/4`
 - Date initialized: 2026-11-20
 - Milestone: `v0.1.0 — Foundational MVP`
 - Current phase: Phase 1 — Rust foundation
-- Phase status: IN PROGRESS; local environment preflight is the active subtask
-- Implementation: no Rust source files created yet
-- Last verified code state: no implementation inspected or tested
+- Phase status: IN PROGRESS; initial package and CLI committed, local verification pending
+- Implementation: minimal Cargo package, library input loader, CLI, unit/integration tests, stable toolchain file, Windows/Linux CI
+- Last verified code state: no Cargo commands have yet been run against the implementation
 - Default branch: `main`
 
 ## Goal
 Build a Rust-based Python-to-Rust transpiler that progressively supports broad Python syntax/semantics and eventually multi-file projects. Preserve behavior where practical; clearly report unsupported or runtime-backed constructs. Do not promise perfect translation of arbitrary Python.
 
-## Documentation in repository
+## Documentation
 - `README.md`
 - `docs/ROADMAP.md`
 - `docs/ARCHITECTURE.md`
@@ -27,40 +26,63 @@ Build a Rust-based Python-to-Rust transpiler that progressively supports broad P
 - `docs/CHANGELOG.md`
 - `docs/SESSION_HANDOFF.md`
 
-## Verified work
-- Canonical repository `slimGT-ui/Py2Rust` was retrieved successfully.
-- Existing `README.md`, `ROADMAP.md`, `DEVELOPMENT.md`, `ARCHITECTURE.md`, `CHANGELOG.md`, `DECISIONS.md`, and this handoff were fetched from the canonical repository.
-- The repository description includes a work-in-progress status.
-- Phase 1 has been initiated in project documentation.
-- No Rust implementation, build, or tests exist yet; no code checks have been run.
+## Implemented in the initial foundation commit
+- Single Cargo package `py2rust`, Rust edition 2024, stable toolchain.
+- No third-party dependencies.
+- Library function `load_python_file`: validates regular file, `.py` extension, and UTF-8 readability; returns structured errors.
+- CLI: `--help`, `--version`, one positional Python file; explicitly says translation is not implemented yet.
+- Unit tests for successful load, missing path, directory, extension, and invalid UTF-8.
+- Integration tests for help/version, missing argument/file, directory, invalid extension, and valid input.
+- GitHub Actions matrix for `ubuntu-latest` and `windows-latest`.
 
-## Key decisions
-See `DECISIONS.md`: broad practical transpiler; Rust implementation; incremental MVP; evaluate existing parser (rustpython-parser candidate); documentation updated after every meaningful change.
-- Phase 1 begins with one minimal Cargo project/CLI; do not create empty crates just to match a future architecture diagram.
-- Do not add the parser dependency during Phase 1.
+## Windows environment confirmed by user
+- Local clone: `C:\programming\Py2Rust`
+- Branch: `main`
+- Remote: `https://github.com/slimGT-ui/Py2Rust.git`
+- Working tree was clean and synchronized before this implementation commit.
+- Git: `2.55.0.windows.5`
+- Rust/Cargo: `1.100.0`
+- Rust target: `x86_64-pc-windows-msvc`
+- Visual Studio Build Tools: `17.14.45`
+- MSVC compiler: `19.44.35230`
+- Use Developer PowerShell (or initialize it with `Launch-VsDevShell.ps1 -Arch amd64 -HostArch amd64`) so MSVC is available.
 
-## Blockers / open questions
-- Local clone path and Git working-tree state are not yet known.
-- Rust compiler and Cargo versions on the user's Arch laptop have not been checked.
-- Workspace/package layout will be finalized after local environment preflight.
+## Verification status
+Not yet run. Do not mark Phase 1 verified until the user runs these commands.
 
 ## Exact next task
-From the root of the local Py2Rust clone, run:
-```bash
-pwd
-git status --short
-rustc --version
-cargo --version
+From the repository root in Developer PowerShell:
+
+```powershell
+git pull --ff-only
+cargo fmt --all -- --check
+cargo clippy --workspace --all-targets --all-features -- -D warnings
+cargo test --workspace
+cargo run -- --help
+cargo run -- --version
 ```
-Send the complete output. Then:
-1. Confirm the working tree and branch before editing.
-2. Initialize the minimal Cargo project and CLI binary.
-3. Add baseline formatting, lint, tests, and CI.
-4. Run the checks locally and record exact output.
-5. Update roadmap, changelog, architecture/decisions if needed, and this handoff.
+
+Then manually check input handling:
+
+```powershell
+'print("hello")' | Set-Content -Encoding utf8 .\smoke_test.py
+cargo run -- .\smoke_test.py
+cargo run -- .\missing.py
+cargo run -- .
+Remove-Item .\smoke_test.py
+```
+
+Expected:
+- Formatting, Clippy, and tests complete successfully.
+- Help/version print usage/version.
+- Valid file is loaded and the CLI explicitly states translation is not implemented yet.
+- Missing file and directory input return clear errors and non-zero exit codes.
+- Remove the temporary smoke-test file after testing.
+
+If a command fails, send its full output before making further changes. After local checks, inspect GitHub Actions status and update this handoff with actual results.
 
 ## Do not redo
-- Do not recreate or replace the existing documentation.
+- Do not recreate or replace existing documentation.
 - Do not claim Phase 1 or any translation feature is complete.
 - Do not add a custom parser before evaluating maintained parser options.
 - Do not mark tests passed unless they were actually run.

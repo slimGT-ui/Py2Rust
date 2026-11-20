@@ -2,6 +2,20 @@
 
 Record consequential decisions with date, status, context, choice, and consequences.
 
+## D-006 — Start with one Cargo package
+- Date: 2026-11-20
+- Status: Accepted
+- Context: The proposed architecture has several conceptual components, but creating empty crates before their boundaries are justified would add overhead.
+- Decision: Start with one Cargo package containing a library for testable core utilities and a CLI binary. Split into workspace crates when parser, analysis, code-generation, or runtime boundaries emerge.
+- Consequences: The initial project remains small and easy to build on Windows and Linux; future modularization remains possible.
+
+## D-007 — Stable Rust and standard-library-only CLI foundation
+- Date: 2026-11-20
+- Status: Accepted
+- Context: The initial CLI only needs argument handling, filesystem metadata, UTF-8 reading, and diagnostics.
+- Decision: Use stable Rust with edition 2024 and avoid CLI/parser dependencies until a concrete need justifies them.
+- Consequences: The initial foundation has no third-party Rust dependencies. CLI argument parsing can be replaced by a maintained crate if complexity grows.
+
 ## D-001 — Broad transpiler direction
 - Date: 2026-11-20
 - Status: Accepted

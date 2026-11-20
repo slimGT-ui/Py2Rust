@@ -1,0 +1,8 @@
+[package]
+name = "py2rust"
+version = "0.1.0"
+edition = "2024"
+description = "A Python-to-Rust transpiler."
+default-run = "py2rust"
+
+[dependencies]
