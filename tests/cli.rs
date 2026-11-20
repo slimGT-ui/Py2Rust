@@ -4,12 +4,18 @@ use std::process::{Command, Output};
 use std::time::{SystemTime, UNIX_EPOCH};
 
 fn temp_dir(label: &str) -> PathBuf {
-    let nonce = SystemTime::now().duration_since(UNIX_EPOCH).unwrap().as_nanos();
+    let nonce = SystemTime::now()
+        .duration_since(UNIX_EPOCH)
+        .unwrap()
+        .as_nanos();
     std::env::temp_dir().join(format!("py2rust-cli-{label}-{}-{nonce}", std::process::id()))
 }
 
 fn run(args: &[&str]) -> Output {
-    Command::new(env!("CARGO_BIN_EXE_py2rust")).args(args).output().unwrap()
+    Command::new(env!("CARGO_BIN_EXE_py2rust"))
+        .args(args)
+        .output()
+        .unwrap()
 }
 
 #[test]
@@ -36,7 +42,10 @@ fn valid_input_is_loaded_without_claiming_translation() {
     fs::create_dir_all(&dir).unwrap();
     let path = dir.join("example.py");
     fs::write(&path, "print('hello')\n").unwrap();
-    let output = Command::new(env!("CARGO_BIN_EXE_py2rust")).arg(&path).output().unwrap();
+    let output = Command::new(env!("CARGO_BIN_EXE_py2rust"))
+        .arg(&path)
+        .output()
+        .unwrap();
     let stdout = String::from_utf8_lossy(&output.stdout);
     assert!(output.status.success());
     assert!(stdout.contains("Loaded Python source:"));
@@ -47,7 +56,10 @@ fn valid_input_is_loaded_without_claiming_translation() {
 #[test]
 fn missing_file_returns_an_error() {
     let path = temp_dir("missing").join("missing.py");
-    let output = Command::new(env!("CARGO_BIN_EXE_py2rust")).arg(path).output().unwrap();
+    let output = Command::new(env!("CARGO_BIN_EXE_py2rust"))
+        .arg(path)
+        .output()
+        .unwrap();
     assert_eq!(output.status.code(), Some(1));
     assert!(String::from_utf8_lossy(&output.stderr).contains("does not exist"));
 }
@@ -56,7 +68,10 @@ fn missing_file_returns_an_error() {
 fn directory_and_wrong_extension_are_rejected() {
     let dir = temp_dir("directory.py");
     fs::create_dir_all(&dir).unwrap();
-    let output = Command::new(env!("CARGO_BIN_EXE_py2rust")).arg(&dir).output().unwrap();
+    let output = Command::new(env!("CARGO_BIN_EXE_py2rust"))
+        .arg(&dir)
+        .output()
+        .unwrap();
     assert_eq!(output.status.code(), Some(1));
     assert!(String::from_utf8_lossy(&output.stderr).contains("is not a file"));
     fs::remove_dir_all(&dir).unwrap();
@@ -65,7 +80,10 @@ fn directory_and_wrong_extension_are_rejected() {
     fs::create_dir_all(&dir).unwrap();
     let path = dir.join("input.txt");
     fs::write(&path, "text").unwrap();
-    let output = Command::new(env!("CARGO_BIN_EXE_py2rust")).arg(&path).output().unwrap();
+    let output = Command::new(env!("CARGO_BIN_EXE_py2rust"))
+        .arg(&path)
+        .output()
+        .unwrap();
     assert_eq!(output.status.code(), Some(1));
     assert!(String::from_utf8_lossy(&output.stderr).contains("expected a Python source file"));
     fs::remove_dir_all(dir).unwrap();
