@@ -62,6 +62,7 @@ From the repository root in Developer PowerShell:
 
 ```powershell
 git pull --ff-only
+cargo fmt --all
 cargo fmt --all -- --check
 cargo clippy --workspace --all-targets --all-features -- -D warnings
 cargo test --workspace
@@ -78,6 +79,8 @@ cargo run -- .\missing.py
 cargo run -- .
 Remove-Item .\smoke_test.py
 ```
+
+CI note: GitHub Actions has already reported a formatting failure on Linux; Clippy and tests were skipped. The first command below intentionally applies rustfmt before the strict formatting check.
 
 Expected:
 - Formatting, Clippy, and tests complete successfully.
