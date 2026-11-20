@@ -30,7 +30,11 @@ impl fmt::Display for InputError {
                 path.display()
             ),
             Self::Inspect { path, source } => {
-                write!(f, "could not inspect input path {}: {source}", path.display())
+                write!(
+                    f,
+                    "could not inspect input path {}: {source}",
+                    path.display()
+                )
             }
             Self::Read { path, source } => {
                 write!(f, "could not read input file {}: {source}", path.display())

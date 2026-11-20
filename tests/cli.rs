@@ -8,7 +8,10 @@ fn temp_dir(label: &str) -> PathBuf {
         .duration_since(UNIX_EPOCH)
         .unwrap()
         .as_nanos();
-    std::env::temp_dir().join(format!("py2rust-cli-{label}-{}-{nonce}", std::process::id()))
+    std::env::temp_dir().join(format!(
+        "py2rust-cli-{label}-{}-{nonce}",
+        std::process::id()
+    ))
 }
 
 fn run(args: &[&str]) -> Output {
