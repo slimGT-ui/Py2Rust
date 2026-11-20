@@ -54,21 +54,42 @@ Build a Rust-based Python-to-Rust transpiler that progressively supports broad P
 - Follow-up CLI test formatting: `cc5ddb4bb78671c404bb6745054378bd69730fc8`.
 - Latest code commit: `cc5ddb4bb78671c404bb6745054378bd69730fc8`; subsequent commits update the changelog and handoff.
 
-## Verification status
-Not yet run. The assistant environment does not have Rust installed, so all Rust formatting/build/lint/test checks must be run in the user's Windows Developer PowerShell. Do not mark Phase 1 verified until the user runs these commands.
+## Windows local verification — passed
+- `cargo fmt --all` and `cargo fmt --all -- --check`: passed.
+- `cargo clippy --workspace --all-targets --all-features -- -D warnings`: passed.
+- `cargo test --workspace`: 10 passed, 0 failed (5 unit + 5 integration).
+- `cargo run -- --help`: expected usage and limitation printed.
+- `cargo run -- --version`: `py2rust 0.1.0`.
+- Clippy and tests compiled the project successfully on the MSVC toolchain.
+
+## Remaining verification
+- GitHub Actions still tests the previously pushed source before the user's local rustfmt changes; it fails at formatting. Push the formatted source and wait for a fresh CI run.
+- Manual valid-file, missing-file, and directory smoke tests have not yet been reported.
+- A standalone `cargo build` command has not been run (Clippy/tests did compile the project).
+- Linux/Arch build and tests have not yet been run.
 
 ## Exact next task
-From the repository root in Developer PowerShell:
+The user has already pulled the implementation and successfully run formatting, Clippy, tests, and CLI help/version on Windows. First inspect the local rustfmt changes:
 
 ```powershell
-git pull --ff-only
-cargo fmt --all
-cargo fmt --all -- --check
-cargo clippy --workspace --all-targets --all-features -- -D warnings
-cargo test --workspace
-cargo run -- --help
-cargo run -- --version
+git status --short
+git diff --stat
+git diff --check
 ```
+
+Review the diff, then commit and push only the intentional rustfmt changes. Do not overwrite them with a fresh pull before inspecting.
+
+After pushing, verify a new GitHub Actions run passes on both Windows and Linux. Then run manual CLI input checks:
+
+```powershell
+'print("hello")' | Set-Content -Encoding utf8 .\smoke_test.py
+cargo run -- .\smoke_test.py
+cargo run -- .\missing.py
+cargo run -- .
+Remove-Item .\smoke_test.py
+```
+
+Then run formatting, Clippy, and tests on the Arch laptop.
 
 Then manually check input handling:
 
